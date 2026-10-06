@@ -29,8 +29,8 @@ export function Nav() {
               aria-current={active ? "page" : undefined}
               onMouseEnter={() => setHovered(tab.href)}
               onMouseLeave={() => setHovered(null)}
-              className={`${tab.bg} flex min-h-20 items-center justify-center text-[1.15rem] font-bold tracking-[-0.025em] text-black transition-[border-radius,opacity] duration-200 hover:opacity-80 sm:min-h-24 sm:text-[1.35rem] ${
-                tab.href === pill ? "rounded-full" : "rounded-[12px]"
+              className={`${tab.bg} flex min-h-20 items-center justify-center text-[1.15rem] font-bold tracking-[-0.025em] text-black transition-[border-radius,opacity] duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] hover:opacity-80 sm:min-h-24 sm:text-[1.35rem] ${
+                tab.href === pill ? "rounded-[48px]" : "rounded-[12px]"
               }`}
             >
               {"icon" in tab ? (

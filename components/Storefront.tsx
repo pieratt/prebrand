@@ -1,6 +1,9 @@
 import Link from "next/link";
+import { DM_Sans } from "next/font/google";
 import { media } from "@/lib/content";
 import { archive, forSale, inDevelopment, type StoreCard } from "@/lib/home";
+
+const dmSans = DM_Sans({ subsets: ["latin"], weight: "700" });
 
 function Meta({ card }: { card: StoreCard }) {
   if (card.inquire) return <p className="text-[#929292] italic">Inquire</p>;
@@ -79,7 +82,7 @@ export function Storefront() {
   return (
     <div>
       <div className="rounded-[30px] bg-[#eee] px-6 py-16 text-center sm:py-24">
-        <h1 className="text-[2rem] font-bold leading-[1.1] tracking-tight text-[#341212] sm:text-[3.4rem]">
+        <h1 className={`${dmSans.className} text-[2rem] font-bold leading-[0.95] tracking-[-0.035em] text-[#341212] sm:text-[3.4rem]`}>
           You don’t need a brand,
           <br />
           you need to launch.

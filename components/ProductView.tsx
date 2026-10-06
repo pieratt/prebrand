@@ -48,7 +48,7 @@ export function ProductView({ product }: { product: Product }) {
 
   return (
     <article className="text-[1.2rem] leading-[1.2] text-[#e7e7e7]">
-      <div className="grid items-start gap-x-5 gap-y-3 md:grid-cols-3 md:gap-x-8">
+      <div className="grid grid-cols-3 items-start gap-x-2 gap-y-3 md:gap-x-8">
         {product.hero && (
           <img
             src={media(product.hero.file)}
@@ -58,7 +58,7 @@ export function ProductView({ product }: { product: Product }) {
             className="h-auto w-full"
           />
         )}
-        <div className={product.hero ? "md:col-span-2" : "md:col-span-3"}>
+        <div className={product.hero ? "col-span-2" : "col-span-3"}>
           <div className="space-y-1">
             {product.headlines.map((line) => (
               <h1
