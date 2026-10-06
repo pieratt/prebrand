@@ -1,4 +1,5 @@
-import { inquireHref, media, type ImageRef } from "@/lib/content";
+import { BuyButton } from "./BuyButton";
+import { media, type ImageRef } from "@/lib/content";
 import { customExamples, type Offer } from "@/lib/offers";
 
 export function Offers({
@@ -33,12 +34,7 @@ export function Offers({
                 <li key={point}>{point}</li>
               ))}
             </ul>
-            <a
-              href={inquireHref(`Pre-Brand Custom — ${offer.name}`)}
-              className="mt-5 inline-block rounded-full bg-[#3bff48] px-4 py-2 text-black hover:bg-[#7e4a95] hover:text-white"
-            >
-              Add to Cart →
-            </a>
+            <BuyButton className="mt-5 !text-[1.3rem] sm:!text-[1.5rem]" />
           </section>
         ))}
       </div>

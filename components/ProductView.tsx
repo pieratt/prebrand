@@ -1,50 +1,53 @@
 import Link from "next/link";
+import { BuyButton, SoldPill } from "./BuyButton";
 import { Gallery } from "./Gallery";
-import {
-  inquireHref,
-  media,
-  orderedSections,
-  type Product,
-} from "@/lib/content";
+import { media, orderedSections, type Product } from "@/lib/content";
 
 function Price({
   price,
   compareAt,
-  sold,
+  size = "lg",
 }: {
   price: string | null;
   compareAt: string | null;
-  sold: boolean;
+  size?: "lg" | "md";
 }) {
+  const main = size === "lg" ? "text-[2.4rem] sm:text-[3.3rem]" : "text-[2rem] sm:text-[2.6rem]";
   return (
-    <p className="text-[1.35rem] font-bold leading-tight text-white">
+    <p className={`${main} font-normal leading-none tracking-[-0.02em] text-white`}>
       {price}
       {compareAt && (
-        <span className="ml-3 text-[1.05rem] font-medium text-[#515151] line-through">
-          {compareAt}
-        </span>
+        <span className="ml-3 text-[0.55em] text-[#515151] line-through">{compareAt}</span>
       )}
-      {sold && <span className="mt-1 block text-[#995eb7]">Sold</span>}
     </p>
   );
 }
 
-function CartButton({ name }: { name: string }) {
+function Headline({ children, as: Tag = "h1" }: { children: React.ReactNode; as?: "h1" | "h2" }) {
   return (
-    <a
-      href={inquireHref(`Pre-Brand — ${name}`)}
-      className="mt-4 inline-block rounded-full bg-[#3bff48] px-5 py-2.5 text-[1.05rem] font-medium text-black transition-colors hover:bg-[#7e4a95] hover:text-white"
-    >
-      Add to Cart →
-    </a>
+    <Tag className="text-[2.6rem] font-bold leading-[0.85] tracking-[-0.03em] text-white sm:text-[3.6rem]">
+      {children}
+    </Tag>
   );
 }
 
+function Rule() {
+  return <hr className="my-5 border-0 border-t border-[#aaa]" />;
+}
+
+const inline = new Set(["Genres", "Formats"]);
+const glyph: Record<string, string> = {
+  Domains: "→",
+  "Purchase Includes": "✓",
+  "Digital Delivery Details": "→",
+};
+
 export function ProductView({ product }: { product: Product }) {
   const sections = orderedSections(product);
+  const action = product.sold ? <SoldPill /> : <BuyButton />;
 
   return (
-    <article>
+    <article className="text-[1.2rem] leading-[1.2] text-[#e7e7e7]">
       <div className="grid items-center gap-6 md:grid-cols-12 md:gap-10">
         {product.hero && (
           <img
@@ -55,26 +58,20 @@ export function ProductView({ product }: { product: Product }) {
             className="h-auto w-full md:col-span-4"
           />
         )}
-        <div className={product.hero ? "md:col-span-8" : "md:col-span-12"}>
-          {product.headlines.map((line) => (
-            <h1 key={line} className="text-[1.8rem] font-bold leading-tight tracking-tight text-white">
-              {line}
-            </h1>
-          ))}
-          <div className="mt-3">
-            <Price price={product.price} compareAt={product.compareAt} sold={product.sold} />
+        <div className={`space-y-5 ${product.hero ? "md:col-span-8" : "md:col-span-12"}`}>
+          <div className="space-y-2">
+            {product.headlines.map((line) => (
+              <Headline key={line}>{line}</Headline>
+            ))}
           </div>
-          {!product.sold && <CartButton name={product.name} />}
+          <Price price={product.price} compareAt={product.compareAt} />
+          {action}
         </div>
       </div>
 
       {product.gallery.length > 0 && (
         <div className="mt-8">
-          <Gallery
-            images={product.gallery}
-            columns={product.galleryColumns}
-            alt={product.name}
-          />
+          <Gallery images={product.gallery} columns={product.galleryColumns} alt={product.name} />
         </div>
       )}
 
@@ -88,66 +85,78 @@ export function ProductView({ product }: { product: Product }) {
             className="h-auto w-28 md:col-span-2 md:w-full"
           />
         )}
-        <div className={product.icon ? "md:col-span-10" : "md:col-span-12"}>
-          <h2 className="text-[1.8rem] font-bold tracking-tight text-white">{product.name}</h2>
-          <div className="mt-2">
-            <Price price={product.price} compareAt={product.compareAt} sold={product.sold} />
-          </div>
-          {!product.sold && <CartButton name={product.name} />}
-
-          <hr className="my-6 border-0 border-t border-[#aaa]" />
-          <p className="max-w-3xl text-[1.15rem] leading-relaxed text-[#e7e7e7]">
-            {product.description}
-          </p>
-
-          {product.website && (
-            <a
-              href={product.website.href}
-              target="_blank"
-              rel="noreferrer"
-              className="mt-5 inline-block rounded-full bg-[#3bff48] px-4 py-2 text-black hover:bg-[#7e4a95] hover:text-white"
-            >
-              Visit Website
-            </a>
-          )}
-
-          <div className="mt-6 max-w-3xl space-y-5">
-            {sections.map((section) => (
-              <section key={section.title}>
-                <h3 className="text-[1.05rem] text-white">{section.title}</h3>
-                <ul className="mt-1 space-y-1 text-[1.05rem] text-[#e7e7e7]">
-                  {section.items.map((item) => (
-                    <li key={item}>{item}</li>
-                  ))}
-                </ul>
-              </section>
-            ))}
+        <div className={`max-w-3xl ${product.icon ? "md:col-span-10" : "md:col-span-12"}`}>
+          <div className="space-y-4">
+            <Headline as="h2">{product.name}</Headline>
+            <Price price={product.price} compareAt={product.compareAt} size="md" />
+            {action}
           </div>
 
-          {product.notes.length > 0 && (
-            <ul className="mt-6 max-w-3xl space-y-2 text-[1.02rem] text-white/70">
-              {product.notes.map((note) => (
-                <li key={note}>{note}</li>
-              ))}
-            </ul>
-          )}
+          <Rule />
+          <p>{product.description}</p>
 
-          <p className="mt-6 text-[1.02rem] text-white/70">
+          {sections.map((section) => (
+            <section key={section.title}>
+              <Rule />
+              {inline.has(section.title) ? (
+                <p>
+                  <span className="text-white">{section.title}:</span> {section.items.join(" ")}
+                </p>
+              ) : (
+                <>
+                  <p className="text-white">{section.title}:</p>
+                  <ul className="mt-1 space-y-0.5">
+                    {section.items.map((item) => (
+                      <li key={item} className="flex gap-2">
+                        <span className="w-5 shrink-0 text-white/60">{glyph[section.title] ?? "→"}</span>
+                        <span>{item}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </>
+              )}
+              {section.title === "Domains" && product.website && (
+                <a
+                  href={product.website.href}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="mt-4 block rounded-full border border-[#3bff48] bg-[#3bff48] px-5 py-2 text-center text-black transition-colors hover:border-[#7e4a95] hover:bg-[#7e4a95] hover:text-white"
+                >
+                  Visit Website
+                </a>
+              )}
+            </section>
+          ))}
+
+          {product.notes.map((note) => (
+            <div key={note}>
+              <Rule />
+              <p className="flex gap-2">
+                <span className="w-5 shrink-0 text-white/60">{note.startsWith("A USA") ? "™" : "✓"}</span>
+                <span>{note}</span>
+              </p>
+            </div>
+          ))}
+
+          <Rule />
+          <p>
             <Link href="/terms" className="text-[#858585] hover:text-white">
               Read the Sale Terms & Conditions
             </Link>
           </p>
-          {product.maker && (
-            <p className="mt-3 text-[1.02rem] text-white/80">
-              {(product.made ?? "Made by").replace(product.maker.name, "").trim()}{" "}
-              <a href={product.maker.href} className="underline underline-offset-2 hover:text-white">
-                {product.maker.name}
-              </a>
-            </p>
-          )}
-          <p className="mt-3 text-[1.02rem]">
+          <Rule />
+          <p>
+            {product.maker ? (
+              <>
+                {(product.made ?? "Made by").replace(product.maker.name, "").trim()}{" "}
+                <a href={product.maker.href} className="text-white hover:underline">
+                  {product.maker.name}
+                </a>
+                <br />
+              </>
+            ) : null}
             Part of{" "}
-            <Link href="/join" className="underline underline-offset-2 hover:text-white">
+            <Link href="/join" className="text-white hover:underline">
               Pre-Brand Market
             </Link>
           </p>

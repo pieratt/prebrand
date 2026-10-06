@@ -36,10 +36,6 @@ export function media(file: string) {
   return `/media/${encodeURIComponent(file)}`;
 }
 
-export function inquireHref(subject: string) {
-  return `mailto:ben@pieratt.com?subject=${encodeURIComponent(subject)}`;
-}
-
 const sectionOrder = [
   "Domains",
   "Genres",

@@ -14,15 +14,14 @@ export function Logos({ images }: { images: ImageRef[] }) {
       </h1>
       <div className="mt-8 grid grid-cols-2 gap-3 md:grid-cols-3">
         {images.map((image) => (
-          <a key={image.file} href="mailto:ben@pieratt.com?subject=Pre-Brand%20logo">
-            <img
-              src={media(image.file)}
-              alt="Logo for sale"
-              width={image.w}
-              height={image.h}
-              className="h-auto w-full transition-opacity hover:opacity-80"
-            />
-          </a>
+          <img
+            key={image.file}
+            src={media(image.file)}
+            alt="Logo for sale"
+            width={image.w}
+            height={image.h}
+            className="h-auto w-full"
+          />
         ))}
       </div>
       <div className="mt-10">
