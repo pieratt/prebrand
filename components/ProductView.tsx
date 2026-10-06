@@ -32,7 +32,7 @@ function Headline({ children, as: Tag = "h1" }: { children: React.ReactNode; as?
 }
 
 function Rule() {
-  return <hr className="my-5 border-0 border-t border-[#aaa]" />;
+  return <hr className="my-4 border-0 border-t border-white/35" />;
 }
 
 const inline = new Set(["Genres", "Formats"]);
@@ -48,18 +48,18 @@ export function ProductView({ product }: { product: Product }) {
 
   return (
     <article className="text-[1.2rem] leading-[1.2] text-[#e7e7e7]">
-      <div className="grid items-center gap-6 md:grid-cols-12 md:gap-10">
+      <div className="grid items-center gap-2 md:grid-cols-3">
         {product.hero && (
           <img
             src={media(product.hero.file)}
             alt={product.name}
             width={product.hero.w}
             height={product.hero.h}
-            className="h-auto w-full md:col-span-4"
+            className="h-auto w-full"
           />
         )}
-        <div className={`space-y-5 ${product.hero ? "md:col-span-8" : "md:col-span-12"}`}>
-          <div className="space-y-2">
+        <div className={`space-y-2.5 ${product.hero ? "md:col-span-2" : "md:col-span-3"}`}>
+          <div className="space-y-1">
             {product.headlines.map((line) => (
               <Headline key={line}>{line}</Headline>
             ))}
@@ -70,23 +70,23 @@ export function ProductView({ product }: { product: Product }) {
       </div>
 
       {product.gallery.length > 0 && (
-        <div className="mt-8">
+        <div className="mt-2">
           <Gallery images={product.gallery} columns={product.galleryColumns} alt={product.name} />
         </div>
       )}
 
-      <div className="mt-12 grid gap-6 md:grid-cols-12">
+      <div className="mt-2 grid gap-2 md:grid-cols-3 md:items-start">
         {product.icon && (
           <img
             src={media(product.icon.file)}
             alt=""
             width={product.icon.w}
             height={product.icon.h}
-            className="h-auto w-28 md:col-span-2 md:w-full"
+            className="h-auto w-28 md:w-full"
           />
         )}
-        <div className={`max-w-3xl ${product.icon ? "md:col-span-10" : "md:col-span-12"}`}>
-          <div className="space-y-4">
+        <div className={product.icon ? "md:col-span-2" : "md:col-span-3"}>
+          <div className="space-y-2.5">
             <Headline as="h2">{product.name}</Headline>
             <Price price={product.price} compareAt={product.compareAt} size="md" />
             {action}

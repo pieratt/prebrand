@@ -13,8 +13,8 @@ export function Nav() {
   const pathname = usePathname();
 
   return (
-    <div className="sticky top-0 z-40 -mx-3 bg-[#22232f]/95 px-3 pb-3 pt-3 backdrop-blur sm:-mx-4 sm:px-4 sm:pb-4 sm:pt-4">
-      <nav className="grid grid-cols-3 gap-2 sm:gap-3" aria-label="Primary">
+    <div className="pointer-events-none sticky top-0 z-40 py-2 sm:py-3">
+      <nav className="pointer-events-auto grid grid-cols-3 gap-2" aria-label="Primary">
         {tabs.map((tab) => {
           const active = tab.href === "/" ? pathname === "/" : pathname.startsWith(tab.href);
           return (
@@ -23,12 +23,14 @@ export function Nav() {
               href={tab.href}
               aria-label={"icon" in tab ? "Home" : undefined}
               aria-current={active ? "page" : undefined}
-              className={`${tab.bg} ${tab.radius} flex min-h-14 items-center justify-center text-[1.1rem] font-bold tracking-[-0.02em] text-black transition-[opacity,box-shadow] hover:opacity-85 sm:min-h-16 sm:text-[1.25rem] ${
-                active ? "shadow-[inset_0_0_0_3px_rgba(0,0,0,0.85)]" : ""
+              className={`${tab.bg} ${tab.radius} flex min-h-20 items-center justify-center text-[1.15rem] font-bold tracking-[-0.025em] text-black shadow-[0_3px_0_rgba(0,0,0,0.45)] transition-[transform,opacity,box-shadow] duration-200 hover:-translate-y-0.5 hover:opacity-90 hover:shadow-[0_5px_0_rgba(0,0,0,0.35)] sm:min-h-24 sm:text-[1.35rem] ${
+                active
+                  ? "shadow-[inset_0_0_0_3px_rgba(0,0,0,0.8),0_3px_0_rgba(0,0,0,0.45)]"
+                  : ""
               }`}
             >
               {"icon" in tab ? (
-                <svg viewBox="0 0 24 24" className="h-6 w-6 sm:h-7 sm:w-7" fill="currentColor" aria-hidden>
+                <svg viewBox="0 0 24 24" className="h-7 w-7 sm:h-8 sm:w-8" fill="currentColor" aria-hidden>
                   <path d="M12 3.1 2.8 11h2.1v9.2h5.2v-5.6h3.8v5.6h5.2V11h2.1L12 3.1Z" />
                 </svg>
               ) : (
