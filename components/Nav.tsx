@@ -1,32 +1,36 @@
 "use client";
 
 import Link from "next/link";
+import { useState } from "react";
 import { usePathname } from "next/navigation";
 
 const tabs = [
-  { href: "/logos", label: "Icons", bg: "bg-[#b497e4]", radius: "rounded-[6px]" },
-  { href: "/", label: "Home", bg: "bg-[#86fcff]", radius: "rounded-[22px]", icon: true },
-  { href: "/custom", label: "Custom", bg: "bg-[#3aff47]", radius: "rounded-[12px]" },
+  { href: "/", label: "Home", bg: "bg-[#86fcff]", icon: true },
+  { href: "/custom", label: "Custom", bg: "bg-[#3aff47]" },
 ] as const;
 
 export function Nav() {
   const pathname = usePathname();
+  const [hovered, setHovered] = useState<string | null>(null);
+  const onCustom = pathname.startsWith("/custom");
+  const activeHref = onCustom ? "/custom" : "/";
+  const pill = hovered ?? activeHref;
 
   return (
-    <div className="pointer-events-none sticky top-0 z-40 py-2 sm:py-3">
-      <nav className="pointer-events-auto grid grid-cols-3 gap-2" aria-label="Primary">
+    <div className="pointer-events-none sticky top-0 z-40 py-1.5">
+      <nav className="pointer-events-auto grid grid-cols-2 gap-1.5" aria-label="Primary">
         {tabs.map((tab) => {
-          const active = tab.href === "/" ? pathname === "/" : pathname.startsWith(tab.href);
+          const active = tab.href === activeHref;
           return (
             <Link
               key={tab.href}
               href={tab.href}
               aria-label={"icon" in tab ? "Home" : undefined}
               aria-current={active ? "page" : undefined}
-              className={`${tab.bg} ${tab.radius} flex min-h-20 items-center justify-center text-[1.15rem] font-bold tracking-[-0.025em] text-black shadow-[0_3px_0_rgba(0,0,0,0.45)] transition-[transform,opacity,box-shadow] duration-200 hover:-translate-y-0.5 hover:opacity-90 hover:shadow-[0_5px_0_rgba(0,0,0,0.35)] sm:min-h-24 sm:text-[1.35rem] ${
-                active
-                  ? "shadow-[inset_0_0_0_3px_rgba(0,0,0,0.8),0_3px_0_rgba(0,0,0,0.45)]"
-                  : ""
+              onMouseEnter={() => setHovered(tab.href)}
+              onMouseLeave={() => setHovered(null)}
+              className={`${tab.bg} flex min-h-20 items-center justify-center text-[1.15rem] font-bold tracking-[-0.025em] text-black transition-[border-radius,opacity] duration-200 hover:opacity-80 sm:min-h-24 sm:text-[1.35rem] ${
+                tab.href === pill ? "rounded-full" : "rounded-[12px]"
               }`}
             >
               {"icon" in tab ? (

@@ -1,5 +1,6 @@
 import { BuyButton } from "./BuyButton";
-import { media, type ImageRef } from "@/lib/content";
+import { Gallery } from "./Gallery";
+import { type ImageRef } from "@/lib/content";
 import { customExamples, type Offer } from "@/lib/offers";
 
 export function Offers({
@@ -14,47 +15,55 @@ export function Offers({
   examples?: string;
 }) {
   return (
-    <article>
-      <h1 className="text-[2.4rem] font-bold tracking-tight text-white sm:text-[3rem]">{title}</h1>
-      <div className="mt-8 grid gap-4 md:grid-cols-3">
+    <article className="text-[1.2rem] leading-[1.2] text-[#e7e7e7]">
+      <h1 className="text-[2.6rem] font-bold leading-[0.85] tracking-[-0.03em] text-white sm:text-[3.6rem]">
+        {title}
+      </h1>
+
+      <div className="mt-1.5 grid gap-1.5 md:grid-cols-3">
         {offers.map((offer) => (
-          <section key={offer.name} className="rounded-2xl bg-white/5 p-5">
-            <h2 className="text-[1.6rem] font-bold text-white">{offer.name}</h2>
-            <p className="mt-2 min-h-16 text-[1.05rem] leading-snug text-[#e7e7e7]">{offer.summary}</p>
-            <p className="mt-4 text-[1.45rem] font-bold text-white">
+          <section
+            key={offer.name}
+            className="flex flex-col rounded-2xl bg-black px-6 py-7 sm:px-8 sm:py-9"
+          >
+            <h2 className="text-[2.4rem] font-bold leading-[0.85] tracking-[-0.03em] text-white sm:text-[3rem]">
+              {offer.name}
+            </h2>
+            <p className="mt-4">{offer.summary}</p>
+            <p className="mt-4 text-[2rem] font-normal leading-none tracking-[-0.02em] text-white sm:text-[2.6rem]">
               {offer.price}
               {offer.compareAt && (
-                <span className="ml-2 text-base font-medium text-[#515151] line-through">
+                <span className="ml-3 text-[0.55em] text-[#515151] line-through">
                   {offer.compareAt}
                 </span>
               )}
             </p>
-            <ul className="mt-4 space-y-1 text-[1rem] text-[#e7e7e7]">
+            <ul className="mt-5 space-y-0.5">
               {offer.points.map((point) => (
-                <li key={point}>{point}</li>
+                <li key={point} className="flex gap-2">
+                  <span className="w-5 shrink-0 text-white/60">✓</span>
+                  <span>{point}</span>
+                </li>
               ))}
             </ul>
-            <BuyButton className="mt-5 !text-[1.3rem] sm:!text-[1.5rem]" />
+            <div className="mt-auto pt-6">
+              <BuyButton topic={`${offer.name} custom brand`} />
+            </div>
           </section>
         ))}
       </div>
 
-      <p className="mt-12 max-w-3xl text-[1.1rem] leading-relaxed text-white/80">{examples}</p>
-      <div className="mt-6 grid grid-cols-2 gap-3">
-        {images.map((image, index) => (
-          <img
-            key={`${image.file}-${index}`}
-            src={media(image.file)}
-            alt=""
-            width={image.w}
-            height={image.h}
-            className="h-auto w-full"
-          />
-        ))}
-      </div>
-      <p className="mt-10 max-w-2xl text-[1.05rem] leading-relaxed text-white/75">
+      <p className="mt-4">{examples}</p>
+
+      {images.length > 0 && (
+        <div className="mt-1.5">
+          <Gallery images={images} columns={6} alt="Custom work" />
+        </div>
+      )}
+
+      <p className="mt-4">
         Now booking 2023. Orders are scheduled in the order they are purchased.{" "}
-        <a href="mailto:ben@pieratt.com" className="underline underline-offset-2 hover:text-white">
+        <a href="mailto:ben@pieratt.com" className="text-white hover:underline">
           Email if you don’t see your project described here.
         </a>
       </p>

@@ -44,11 +44,11 @@ const glyph: Record<string, string> = {
 
 export function ProductView({ product }: { product: Product }) {
   const sections = orderedSections(product);
-  const action = product.sold ? <SoldPill /> : <BuyButton />;
+  const action = product.sold ? <SoldPill /> : <BuyButton topic={product.name} />;
 
   return (
     <article className="text-[1.2rem] leading-[1.2] text-[#e7e7e7]">
-      <div className="grid items-center gap-2 md:grid-cols-3">
+      <div className="grid items-start gap-x-5 gap-y-3 md:grid-cols-3 md:gap-x-8">
         {product.hero && (
           <img
             src={media(product.hero.file)}
@@ -58,24 +58,35 @@ export function ProductView({ product }: { product: Product }) {
             className="h-auto w-full"
           />
         )}
-        <div className={`space-y-2.5 ${product.hero ? "md:col-span-2" : "md:col-span-3"}`}>
+        <div className={product.hero ? "md:col-span-2" : "md:col-span-3"}>
           <div className="space-y-1">
             {product.headlines.map((line) => (
-              <Headline key={line}>{line}</Headline>
+              <h1
+                key={line}
+                className="text-[1.85rem] font-bold leading-none tracking-[-0.03em] text-white sm:text-[2.35rem]"
+              >
+                {line}
+              </h1>
             ))}
           </div>
-          <Price price={product.price} compareAt={product.compareAt} />
-          {action}
+          <p className="mt-2 text-[1.45rem] font-normal leading-none tracking-[-0.02em] text-white sm:text-[1.85rem]">
+            {product.price}
+            {product.compareAt && (
+              <span className="ml-2 text-[0.9em] text-[#8a8a8a] line-through">{product.compareAt}</span>
+            )}
+            {product.sold && <span className="ml-2 text-[#bdbdbd]">Sold</span>}
+          </p>
+          <div className="mt-4">{action}</div>
         </div>
       </div>
 
       {product.gallery.length > 0 && (
-        <div className="mt-2">
+        <div className="mt-1.5">
           <Gallery images={product.gallery} columns={product.galleryColumns} alt={product.name} />
         </div>
       )}
 
-      <div className="mt-2 grid gap-2 md:grid-cols-3 md:items-start">
+      <div className="mt-1.5 grid items-start gap-x-5 gap-y-3 md:grid-cols-3 md:gap-x-8">
         {product.icon && (
           <img
             src={media(product.icon.file)}
@@ -85,7 +96,11 @@ export function ProductView({ product }: { product: Product }) {
             className="h-auto w-28 md:w-full"
           />
         )}
-        <div className={product.icon ? "md:col-span-2" : "md:col-span-3"}>
+        <div
+          className={`rounded-2xl border border-white/50 bg-transparent px-6 py-7 sm:px-8 sm:py-9 ${
+            product.icon ? "md:col-span-2" : "md:col-span-3"
+          }`}
+        >
           <div className="space-y-2.5">
             <Headline as="h2">{product.name}</Headline>
             <Price price={product.price} compareAt={product.compareAt} size="md" />
